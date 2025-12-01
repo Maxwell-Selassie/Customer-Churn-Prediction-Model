@@ -1,0 +1,50 @@
+
+data:
+  file_path: '../data/raw/customer_churn.csv'
+  encoding: 'utf-8'
+  dtype_spec: null
+  
+quality_checks:
+  missing_threshold: 0.5
+  duplicate_check: true
+  outlier_method: 'iqr'  # 'iqr', 'zscore', or 'isolation_forest'
+  outlier_iqr_multiplier: 1.5
+  
+univariate:
+  normality_test: 'shapiro'
+  confidence_level: 0.95
+  alpha: 0.05
+  sample_size_limit: 5000
+  
+statistical_tests:
+  numeric_test: 'mannwhitneyu'  # or 'ttest'
+  categorical_test: 'chi2'
+  alpha: 0.05
+  effect_size_min: 0.2
+  
+parallel_processing:
+  n_jobs: -1
+  backend: 'threading'
+  
+output:
+  formats: ['csv', 'json', 'html', 'sqlite']
+  sqlite_db: 'outputs/data/eda_results.db'
+  report_dir: 'outputs/reports/'
+  viz_dir: 'outputs/visualizations/'
+  timestamp_reports: true
+  
+visualization:
+  dpi: 300
+  style: 'seaborn-v0_8-darkgrid'
+  figsize_univariate: [20, 17]
+  figsize_correlation: [15, 8]
+  figsize_regplot: [14, 7]
+  bins_default: 10
+  
+logging:
+  level: 'INFO'
+  log_file: 'outputs/logs/eda.log'
+  format: '%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+
+
+
