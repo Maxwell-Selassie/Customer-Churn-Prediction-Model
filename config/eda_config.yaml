@@ -1,5 +1,5 @@
 data:
-  file_path: '../data/raw/customer_churn.csv'
+  file_path: 'data/raw/customer_churn.csv'
   encoding: 'utf-8'
   max_rows: null
 

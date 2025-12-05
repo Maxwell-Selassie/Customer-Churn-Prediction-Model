@@ -3,21 +3,21 @@ warnings.filterwarnings('ignore')
 from pathlib import Path
 import sys
 
-sys.path.insert(0, Path(str(__file__)).parent.parent)
+sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
-from data_loader import DataLoader
-from data_quality import DataQuality
-from univariate import UnivariateAnalysis
-from bivariate import BivariateAnalysis
-from report_generator import ReportGenerator
+from eda.data_loader import DataLoader
+from eda.data_quality import DataQuality
+from eda.univariate import UnivariateAnalysis
+from eda.bivariate import BivariateAnalysis
+from eda.report_generator import ReportGenerator
 from utils import Logger, Timer
 
 
 class EDAPipeline:
     """Main EDA execution pipeline"""
     
-    def __init__(self, config_path='config.yaml'):
+    def __init__(self, config_path='config/eda_config.yaml'):
         self.logger = Logger().get_logger()
         self.config_path = config_path
         self.logger.info("=" * 80)
@@ -55,9 +55,10 @@ class EDAPipeline:
             # Stage 5: Report Generation
             with Timer("Report Generation"):
                 report_gen = ReportGenerator(config)
-                report_gen.generate_all_reports(
-                    quality_results, univariate_results, bivariate_results, df
-                )
+                # report_gen.generate_all_reports(
+                #     quality_results, univariate_results, bivariate_results, df
+                # )
+                report_gen._save_csv_reports(quality_results, univariate_results, bivariate_results)
             
             self.logger.info("=" * 80)
             self.logger.info("EDA PIPELINE EXECUTION COMPLETED SUCCESSFULLY")
@@ -76,5 +77,5 @@ class EDAPipeline:
             raise
 
 if __name__ == '__main__':
-    pipeline = EDAPipeline('config.yaml')
+    pipeline = EDAPipeline('config/eda_config.yaml')
     results = pipeline.execute()

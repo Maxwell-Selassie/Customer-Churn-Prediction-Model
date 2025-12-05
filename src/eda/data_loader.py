@@ -2,6 +2,9 @@ import pandas as pd
 import numpy as np
 import yaml
 from pathlib import Path
+from utils.file_utils import IOHandler
+from utils.logger import Logger
+from utils.timer import Timer
 import sys
 
 sys.path.insert(0, Path(str(__file__)).parent.parent)
@@ -9,15 +12,16 @@ sys.path.insert(0, Path(str(__file__)).parent.parent)
 from utils import IOHandler, Logger, Timer
 
 class DataLoader:
-    def __init__(self, config_path='config.yaml'):
+    def __init__(self, config_path='config/eda_config.yaml'):
         self.logger = Logger().get_logger()
         self.io_handler = IOHandler()
         self.config = self._load_config(config_path)
     
     def _load_config(self, config_path):
         """Load YAML configuration"""
+        filepath = Path(config_path)
         try:
-            with open(config_path, 'r') as f:
+            with open(filepath, 'r') as f:
                 config = yaml.safe_load(f)
             self.logger.info(f"Configuration loaded from {config_path}")
             return config

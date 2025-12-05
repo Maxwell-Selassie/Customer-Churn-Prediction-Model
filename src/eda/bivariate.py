@@ -5,10 +5,9 @@ from scipy.stats import mannwhitneyu, chi2_contingency
 from joblib import Parallel, delayed
 import sys
 from pathlib import Path
+from utils.logger import Logger
+from utils.timer import Timer
 
-sys.path.insert(0, Path(str(__file__)).parent.parent)
-
-from utils import Logger, Timer
 
 class BivariateAnalysis:
     def __init__(self, config):

@@ -4,10 +4,8 @@ from scipy import stats
 from joblib import Parallel, delayed
 import sys
 from pathlib import Path
-
-sys.path.insert(0, Path(str(__file__)).parent.parent)
-
-from utils import Logger, Timer
+from utils.logger import Logger
+from utils.timer import Timer
 
 class UnivariateAnalysis:
     def __init__(self, config):
