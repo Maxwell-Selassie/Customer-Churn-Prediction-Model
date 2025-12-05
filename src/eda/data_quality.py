@@ -50,10 +50,8 @@ class DataQuality:
             if len(problematic) > 0:
                 self.logger.warning(f"Columns with >{max_missing}% missing: {problematic.index.tolist()}")
             
-            return {
-                'count': len(missing),
-                'details': summary.to_dict('index')
-            }
+            return summary 
+        
         except Exception as e:
             self.logger.error(f"Error checking missing values: {e}")
             return {'count': 0, 'details': {}, 'error': str(e)}

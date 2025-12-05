@@ -55,9 +55,6 @@ class EDAPipeline:
             # Stage 5: Report Generation
             with Timer("Report Generation"):
                 report_gen = ReportGenerator(config)
-                # report_gen.generate_all_reports(
-                #     quality_results, univariate_results, bivariate_results, df
-                # )
                 report_gen._save_csv_reports(quality_results, univariate_results, bivariate_results)
             
             self.logger.info("=" * 80)
