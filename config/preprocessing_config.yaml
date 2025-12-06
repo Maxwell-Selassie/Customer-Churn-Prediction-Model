@@ -1,0 +1,79 @@
+data:
+  file_path: '../data/raw/customer_churn.csv'
+  encoding: 'utf-8'
+
+data_split:
+  test_size: 20000
+  dev_size: 20000
+  random_state: 42
+  stratify_column: 'Churn_Flag'  # Stratified split by target
+
+missing_values:
+  drop_columns: ['Customer ID']
+  strategy: 'drop_rows'  # rows with Customer ID null will be dropped first
+
+business_logic:
+  drop_zero_outliers: true  # Drop rows where Quantity != 0 but Price or Revenue = 0
+  zero_logic_columns:
+    quantity: 'Quantity'
+    price: 'Price'
+    revenue: 'Revenue'
+
+outliers:
+  flag_outliers: true
+  method: 'iqr'  # IQR method for flagging
+  multiplier: 1.5
+
+duplicates:
+  check_duplicates: true
+  subset_cols: null  # If null, check all columns; else specify column list
+
+datetime:
+  datetime_columns: ['InvoiceDate', 'Signup_Date', 'Last_Login_Date']
+  cyclical_encoding: true
+  cyclical_columns:
+    month: 12
+    day_of_week: 7
+    hour: 24
+
+feature_engineering:
+  aggregations:
+    - type: 'groupby'
+      column: 'Customer ID'
+      agg_col: 'Profit'
+      operations: ['sum', 'mean']
+    - type: 'groupby'
+      column: 'Description'
+      agg_col: 'Revenue'
+      operations: ['sum', 'mean']
+    - type: 'groupby'
+      column: 'Country'
+      agg_col: 'Revenue'
+      operations: ['sum', 'mean']
+    - type: 'groupby'
+      column: 'Country'
+      agg_col: 'Profit'
+      operations: ['sum', 'mean']
+    - type: 'count'
+      column: 'Customer ID'
+      agg_col: 'Invoice'
+
+encoding:
+  one_hot_columns: ['Gender', 'Payment_Method', 'Category', 'Customer_Segment', 'Marketing_Channel']
+  frequency_columns: ['Subcategory']
+  target_column: 'Churn_Flag'
+  label_encoding_columns: []
+
+transformations:
+  log_columns: ['Revenue', 'Price', 'Cost']
+
+output:
+  processed_dir: './processed_data'
+  pipeline_file: 'preprocessing_pipeline.joblib'
+  report_name: 'preprocessing_report.html'
+  splits:
+    train: 'train_data.csv'
+    dev: 'dev_data.csv'
+    test: 'test_data.csv'
+
+columns_to_drop: ['Invoice', 'StockCode', 'Description', 'InvoiceDate', 'Customer ID', 'Signup_Date', 'Last_Login_Date', 'Country']
