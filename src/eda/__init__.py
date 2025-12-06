@@ -3,6 +3,7 @@ from .data_quality import DataQuality
 from .univariate import UnivariateAnalysis
 from .bivariate import BivariateAnalysis
 from .report_generator import ReportGenerator
+from .eda_pipeline import EDAPipeline
 
 
 __all__ = [
@@ -10,5 +11,6 @@ __all__ = [
     'DataQuality',
     'UnivariateAnalysis',
     'BivariateAnalysis',
-    'ReportGenerator'
+    'ReportGenerator',
+    'EDAPipeline'
 ]

@@ -2,6 +2,7 @@ import logging
 import sys
 from pathlib import Path
 from datetime import datetime
+from logging.handlers import TimedRotatingFileHandler
 
 class Logger:
     _instance = None
@@ -12,26 +13,29 @@ class Logger:
             cls._instance._initialized = False
         return cls._instance
     
-    def __init__(self):
+    def __init__(self, log_file):
         if self._initialized:
             return
         
         self.log_dir = Path('./logs')
         self.log_dir.mkdir(exist_ok=True)
         
-        log_file = self.log_dir / f"eda_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log"
         
-        self.logger = logging.getLogger('EDA_Framework')
-        self.logger.setLevel(logging.DEBUG)
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.INFO)
         
-        file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(logging.DEBUG)
+        file_handler = TimedRotatingFileHandler(
+            filename=log_file,
+            when='midnight',
+            backupCount=7,
+        )
+        file_handler.setLevel(logging.INFO)
         
         console_handler = logging.StreamHandler(sys.stdout)
         console_handler.setLevel(logging.INFO)
         
         formatter = logging.Formatter(
-            '%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+            '%(asctime)s - %(name)s - %(funcName)s:%(lineno)d - %(levelname)s - %(message)s',
             datefmt='%Y-%m-%d %H:%M:%S'
         )
         file_handler.setFormatter(formatter)

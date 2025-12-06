@@ -1,5 +1,5 @@
 data:
-  file_path: '../data/raw/customer_churn.csv'
+  file_path: 'data/raw/customer_churn.csv'
   encoding: 'utf-8'
 
 data_split:
@@ -68,7 +68,7 @@ transformations:
   log_columns: ['Revenue', 'Price', 'Cost']
 
 output:
-  processed_dir: './processed_data'
+  processed_dir: 'data/processed'
   pipeline_file: 'preprocessing_pipeline.joblib'
   report_name: 'preprocessing_report.html'
   splits:
