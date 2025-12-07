@@ -13,19 +13,20 @@ class Logger:
             cls._instance._initialized = False
         return cls._instance
     
-    def __init__(self, log_file):
+    def __init__(self):
         if self._initialized:
             return
         
         self.log_dir = Path('./logs')
         self.log_dir.mkdir(exist_ok=True)
         
-        
-        self.logger = logging.getLogger(__name__)
+        LOG_FILE = self.log_dir/f'customer_churn_{datetime.now().strftime('%Y%m%d_%H%M%S')}.log'
+
+        self.logger = logging.getLogger('CUSTOMER CHURN PREDICTION')
         self.logger.setLevel(logging.INFO)
         
         file_handler = TimedRotatingFileHandler(
-            filename=log_file,
+            filename=LOG_FILE,
             when='midnight',
             backupCount=7,
         )
